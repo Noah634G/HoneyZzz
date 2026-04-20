@@ -1270,3 +1270,29 @@ footer {
     padding: 0 16px 40px;
   }
 }
+
+/* ── MODALE ── */
+.modale-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 26, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modale-box {
+  background: #fff;
+  border: 1.5px solid #e0c97a;
+  border-radius: 10px;
+  padding: 36px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c1a00;
+  box-shadow: 0 8px 30px rgba(200,150,0,0.15);
+}
