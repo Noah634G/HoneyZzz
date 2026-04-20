@@ -43,4 +43,38 @@ function verifieProfil($connexion, $mailU, $mdp){
 }
 
 
+function AfficherProduit($connexion) {
+    // Ta requête avec tes données exactes
+    $query = "select nomProduit, prix, dateRecolte, format from Produit";	
+    $resultat = mysqli_query($connexion, $query);
+
+    if ($resultat) {
+        // On récupère le nombre total pour gérer les classes CSS
+        $total = mysqli_num_rows($resultat);
+        $i = 1;
+
+        while ($p = mysqli_fetch_array($resultat)) {
+            // Gestion simplifiée des classes (first pour le 1er, last pour le dernier)
+            if ($i == 1) { 
+                echo "<li class='first'>"; 
+            } elseif ($i == $total) { 
+                echo "<li class='last'>"; 
+            } else { 
+                echo "<li>"; 
+            }
+
+            // Affichage des données demandées
+            echo "<strong>" . $p["nomProduit"] . "</strong><br>";
+            echo "Prix : " . $p["prix"] . " €<br>";
+            echo "Format : " . $p["format"] . "<br>";
+            echo "<small>Récolte : " . $p["dateRecolte"] . "</small>";
+            
+            echo "</li>";
+            $i++;
+        }
+    } else {
+        echo "Erreur SQL : " . mysqli_error($connexion);
+    }
+}
+
 ?>
