@@ -226,6 +226,10 @@ function commander() {
   alert('Commande passée ! Merci 🐝\n(Fonctionnalité de paiement à intégrer)');
 }
 
+function fermerModale() {
+  document.getElementById('modale').style.display = 'none';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // ... existing code ...
 
