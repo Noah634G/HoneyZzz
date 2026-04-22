@@ -63,13 +63,12 @@ function AfficherProduit($connexion) {
                 echo "<li>"; 
             }
 
-            // Affichage des données demandées
-            echo "<strong>" . $p["nomProduit"] . "</strong><br>";
-            echo "Prix : " . $p["prix"] . " €<br>";
-            echo "Format : " . $p["format"] . "<br>";
-            echo "<small>Récolte : " . $p["dateRecolte"] . "</small>";
-            
-            echo "</li>";
+            echo "<div class='card'>";
+                echo "<h3>" . $p["nomProduit"] . "</h3>";
+                echo "<p class='price'>" . $p["prix"] . " €</p>";
+                echo "<p><strong>Format :</strong> " . $p["format"] . "</p>";
+                echo "<div class='footer-card'><small>Récolte : " . $p["dateRecolte"] . "</small></div>";
+            echo "</div>";
             $i++;
         }
     } else {
