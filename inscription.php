@@ -1,47 +1,10 @@
-<?php  require('include/connect.php'); ?>
-<?php  require('include/fonctions.php'); ?>
-
-<?php 
-    // code PHP permettant de gérer le fait que l'utilisateur est bien logué et la connection à la BD pour la page.
-    // Ce code pourrait être intégré dans une fonction car répété à chaque début de page. Attention toutefois dans ce cas-là à bien gérer les variables (locales et globales)
-
-    // 1 . Gestion du login
-    // Le login est stocké en variable de session si l'utilisateur est correctement logué.
-
-    // obligatoire de prolonger la session
-    session_start();
-
-    // S'il n'y a rien dans la variable de session, on redirige vers la page de login
-     if (empty($_SESSION['mailU']))
-    {
-      $_SESSION['message']="Vous n'avez pas le droit d'accéder à cette page";
-      // on redirige vers login
-      header("Location:connexion.php");
-    }
-    // sinon on stocke l'utilisateur courant dans la variable $pesudo
-    else
-    {
-      $mailU = $_SESSION['mailU'];
-    }
-
-
-    // 2. Connexion à la base
-    $connexion = mysqli_connect("p:".SERVEUR, NOM, PASSE,BD);
-    if (!$connexion)
-    {
-      echo "<p>Problème : Connexion au serveur ".SERVEUR." ou à la base ".BD." impossible. <br> Erreur : ".mysqli_error()."</p>";
-     
-    }   
-?>
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link href="style.css" rel="stylesheet">
-  <title>Mon espace apiculteur – HoneyZzz</title>
+  <title>Inscription – Ruche Connectée</title>
 </head>
 <body>
 
@@ -50,7 +13,6 @@
   <div class="nav-left">
     <ul class="nav-links">
       <li><a href="index.php">Accueil</a></li>
-      <li><a href="apiculteur.php" class="active">Ruche</a></li>
       <li><a href="boutique.php">Boutique</a></li>
     </ul>
   </div>
@@ -63,7 +25,7 @@
         <circle cx="12" cy="8" r="4"/>
         <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
       </svg>
-      Mon compte
+      Connexion
     </a>
     <button class="btn-panier" id="btn-panier">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -73,44 +35,70 @@
       </svg>
       Panier
     </button>
-
-    <a class="btn-deconnexion" href="deconnexion.php">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
-        <polyline points="16 17 21 12 16 7"/>
-        <line x1="21" y1="12" x2="9" y2="12"/>
-      </svg>
-      Déconnexion
-    </a>
   </div>
 </nav>
 
-<!--Espace apiculteur-->
-<section class="dashboard">
-
-  <h1 class="dashboard-bienvenue">Bienvenue, Apiculteur 🐝</h1>
-
-  <section class="mon-apiary">
-  
-  <div class="ruches-grid">
-    <a href="ajouter_ruche.php" class="ruche-ajouter" style="text-decoration: none; color: inherit;">
-      <div class="ruche-ajouter-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="8" x2="12" y2="16"/>
-          <line x1="8" y1="12" x2="16" y2="12"/>
-        </svg>
+<!--Inscription-->
+<form class="connexion" id="inscription" action="inscription_action.php" method="POST">
+  <div class="connexion-card">
+    <h2>Créer un compte</h2>
+    <p class="connexion-sub">Rejoignez la communauté HoneyZzz</p>
+    <div class="form-group">
+      <label>Je suis un :</label>
+      <div class="role-choice">
+        <label class="role-option">
+          <input type="radio" name="role" value="client" checked>
+          <span>🛒 Client</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="apiculteur">
+          <span>🐝 Apiculteur</span>
+        </label>
       </div>
-      <span>Ajouter Ruche</span>
-    </a>
+    </div>
+    <div class="form-group">
+      <label for="prenom">Prénom</label>
+      <input type="text" name="prenom" id="prenom" placeholder="Jean" />
+    </div>
 
-    <ul class="clear" style="list-style: none; display: contents;">
-      <?php AfficherRuche($connexion, $_SESSION['mailU']); ?>
-    </ul>
-    
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input type="text" name="nom" id="nom" placeholder="Dupont" />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Adresse e-mail</label>
+      <input type="email" name="email" id="email" placeholder="vous@exemple.com" />
+    </div>
+
+    <div class ="form-group">
+      <label for="tel">Numéro de téléphone</label>
+      <input type="tel" name="tel" id="tel" placeholder="06 00 00 00 00" />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input type="password" name="mdp" id="password" placeholder="••••••••" />
+    </div>
+
+    <div class="form-group">
+      <label for="confirm-password">Confirmer le mot de passe</label>
+      <input type="password" name="confirm-mdp" id="confirm-password" placeholder="••••••••" />
+    </div>
+
+    <div class="form-options">
+      <label class="checkbox-wrap">
+        <input type="checkbox" id="cgu"> J'accepte les <a href="#" class="forgot-link">conditions d'utilisation</a>
+      </label>
+    </div>
+
+    <button type="submit" class="btn-decouvrir" style="width:100%; text-align:center;">
+      Créer mon compte
+    </button>
+
+    <p class="register-link">Déjà un compte ? <a href="connexion.php">Se connecter</a></p>
   </div>
-</section>
-</section>
+</form>
 
 </body>
 

@@ -42,7 +42,30 @@ function verifieProfil($connexion, $mailU, $mdp){
       }
 }
 
+function InscriptionUtilisateur($connexion, $nom, $prenom, $email,$tel, $mdp, $role) {
+    // Nettoyage des données
+    $nom = mysqli_real_escape_string($connexion, $nom);
+    $prenom = mysqli_real_escape_string($connexion, $prenom);
+    $email = mysqli_real_escape_string($connexion, $email);
+    $tel = mysqli_real_escape_string($connexion, $tel);
+    $mdp = mysqli_real_escape_string($connexion, $mdp);
+    $role = mysqli_real_escape_string($connexion, $role);
 
+    // On récupère la date du jour pour 'datecreation'
+    $date = date("Y-m-d");
+
+    //vérification que l'email n'existe pas déjà
+    $check = mysqli_query($connexion, "SELECT mailU FROM Utilisateur WHERE mailU = '$email'");
+    if(mysqli_num_rows($check) > 0) {
+        return false; // L'email existe déjà, on arrête tout
+    }
+
+    // Requête SQL avec TES noms de colonnes : mdp et role
+    $sql = "INSERT INTO Utilisateur (nomU, prenomU, mailU,telU, mdp, role, datecreation) 
+            VALUES ('$nom', '$prenom', '$email', '$tel', '$mdp', '$role', '$date')";
+
+    return mysqli_query($connexion, $sql);
+}
 function AfficherProduit($connexion) {
     // Ta requête avec tes données exactes
     $query = "select nomProduit, prix, dateRecolte, format from Produit";	
@@ -75,5 +98,46 @@ function AfficherProduit($connexion) {
         echo "Erreur SQL : " . mysqli_error($connexion);
     }
 }
+
+function AfficherRuche($connexion, $mailU) {
+    $query = "SELECT R.nom, R.dateInstallation, R.especeAbeille, R.statut, E.nomLieu, E.adresse 
+              FROM Ruche R 
+              JOIN Emplacement E ON R.idEmplacement = E.idEmplacement 
+              JOIN Utilisateur U ON E.idUtilisateur = U.idUtilisateur 
+              WHERE U.mailU = '$mailU'";
+
+    $resultat = mysqli_query($connexion, $query);
+
+    if ($resultat) {
+        $total = mysqli_num_rows($resultat);
+        $i = 1;
+
+        while ($r = mysqli_fetch_array($resultat)) {
+            // Gestion des classes first/last comme pour les produits
+            if ($i == 1) { 
+                echo "<li class='first'>"; 
+            } elseif ($i == $total) { 
+                echo "<li class='last'>"; 
+            } else { 
+                echo "<li>"; 
+            }
+
+            // Structure simple avec tes classes CSS
+            $lien = "controleruche.php?nom=" . urlencode($r['nom']);
+
+            echo "  <a href='$lien' class='card' style='text-decoration:none; color:inherit;'>";
+            echo "    <h3>" . $r["nom"] . "</h3>";
+            echo "    <p class='card-label'>" . $r["especeAbeille"] . "</p>";
+            echo "    <p><strong>Lieu :</strong> " . $r["nomLieu"] . "</p>";
+            echo "    <div class='footer-card'><small>Installée le : " . $r["dateInstallation"] . "</small></div>";
+            echo "  </a>";
+            echo "</li>";
+            $i++;
+        }
+    } else {
+        echo "Erreur SQL : " . mysqli_error($connexion);
+    }
+}
+
 
 ?>

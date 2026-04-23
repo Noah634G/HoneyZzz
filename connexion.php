@@ -74,7 +74,7 @@
     <button class="btn-decouvrir" type="submit" style="width:100%; text-align:center;">Se connecter</button>
     <p> <?php echo $_SESSION['message'];?></p>
     </form>
-    <p class="register-link">Pas encore de compte ? <a href="inscription.html">Créer un compte</a></p>
+    <p class="register-link">Pas encore de compte ? <a href="inscription.php">Créer un compte</a></p>
   </div>
 </section>
 
