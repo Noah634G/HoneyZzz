@@ -139,5 +139,19 @@ function AfficherRuche($connexion, $mailU) {
     }
 }
 
+function AjouterRuche($connexion, $nom, $date, $espece, $statut, $idEmplacement) {
+    // Sécurité : on nettoie les chaînes pour éviter les injections SQL
+    $nom = mysqli_real_escape_string($connexion, $nom);
+    $date = mysqli_real_escape_string($connexion, $date);
+    $espece = mysqli_real_escape_string($connexion, $espece);
+    $statut = mysqli_real_escape_string($connexion, $statut);
+    $idEmplacement = (int)$idEmplacement; // On force en nombre entier
+
+    // Requête SQL d'insertion
+    $sql = "INSERT INTO Ruche (nom, dateInstallation, especeAbeille, statut, idEmplacement) 
+            VALUES ('$nom', '$date', '$espece', '$statut', '$idEmplacement')";
+
+    return mysqli_query($connexion, $sql);
+}
 
 ?>
