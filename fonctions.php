@@ -24,7 +24,7 @@ function verifieProfil($connexion, $mailU, $mdp){
                 header("Location: boutique.php"); // Page d'achat
             } 
             else {
-                header("Location: index.php"); // Admin ou autre
+                header("Location: admin.php"); // Admin ou autre
             }
             exit();
         } else {
