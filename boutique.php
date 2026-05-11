@@ -86,12 +86,24 @@
 <section class="boutique" id="boutique">
   <div class="boutique-header">
     <div class="search-bar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input type="text" placeholder="Rechercher..." id="search-input" />
-    </div>
+      </div>
+
+    <?php 
+    // On affiche le bouton seulement si l'utilisateur est connecté
+    // (Puisque vous redirigez vers connexion.php si mailU est vide au début du fichier,
+    // ce bouton s'affichera pour tout utilisateur ayant passé cette barrière)
+    if (!empty($_SESSION['mailU']) && $_SESSION['role'] === 'Apiculteur') : 
+    ?>
+      <div class="admin-actions" style="margin-bottom: 20px; text-align: right;">
+        <a href="ajouter_miel.php" class="btn-valider" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Ajouter un miel
+        </a>
+      </div>
+    <?php endif; ?>
   </div>
 
   <div class="grid" id="products-grid">
