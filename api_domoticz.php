@@ -28,7 +28,7 @@
  */
 
 session_start();
-require('connect.php');
+require('include/connect.php');
 
 // ── Sécurité
 if (empty($_SESSION['mailU'])) {
@@ -41,23 +41,22 @@ header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate');
 
 // ── Config Domoticz (invisible du navigateur)
-define('DOMOTICZ_IP',   '127.0.0.1');
+define('DOMOTICZ_IP',   '192.168.4.1');
 define('DOMOTICZ_PORT', '8080');
 define('DOMOTICZ_USER', '');  // laisser vide si pas de login
 define('DOMOTICZ_PASS', '');
 
-// ═══════════════════════════════════════════════════════════
 //  TABLE DE CONFIG — ajoute tes capteurs ici
-//  (optionnel : si l'idx n'est pas là, on utilise le nom Domoticz)
-// ═══════════════════════════════════════════════════════════
 $capteurs_config = [
-    '4' => 'Consommation',
-    '5' => 'Température',
-    '6' => 'Humidité',
-    '7' => 'Poids',
-    '8' => 'CO₂',
-    '9' => 'Activité sonore',
-    // Ajoute tes idx ici...
+    '14' => 'Consommation Prise',  // IDX 14 (Usage Electric)
+    '6'  => 'Multisensor Air',     // IDX 6 (Temp + Humidity)
+    '4'  => 'Luminosité',          // IDX 4 (Illuminance)
+    '5'  => 'UV',                  // IDX 5 (Ultraviolet)
+    '1'  => 'Mouvement',           // IDX 1 (Mouvement)
+    '2'  => 'Vibration',           // IDX 2 (Vibration)
+    '19' => 'Porte',               // IDX 19 (Porte)
+    '23' => 'Alarme',              // IDX 23 (Alarme)
+    '24' => 'Température Ext',     // IDX 24 (LaCrosse TX3 - si besoin)
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -110,7 +109,7 @@ function fetchDevice($idx) {
 
     $url = $base . '/json.htm?type=devices&rid=' . $idx;
 
-    $context  = stream_context_create(['http' => ['timeout' => 5]]);
+    $context  = stream_context_create(['http' => ['timeout' => 10]]);
     $response = @file_get_contents($url, false, $context);
 
     if ($response === false) return null;
