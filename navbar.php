@@ -10,6 +10,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 // Connexion utilisateur
 $isConnected = !empty($_SESSION['mailU']);
 $userEmail = $isConnected ? $_SESSION['mailU'] : '';
+$role = $isConnected ? $_SESSION['role'] : '';
 
 // Panier
 $nbArticles = 0;
@@ -80,7 +81,12 @@ if (!empty($_SESSION['panier'])) {
             <?= htmlspecialchars($userEmail) ?>
           </p>
 
-          <a href="apiculteur.php">Mon profil</a>
+          <?php if ($_SESSION['role'] == 'client'): ?>
+              <a href="client.php">Mon profil</a>
+          <?php else: ?>
+              <a href="apiculteur.php">Mon profil</a>
+          <?php endif; ?>
+
           <a href="deconnexion.php" class="btn-logout">Déconnexion</a>
         </div>
       </div>
