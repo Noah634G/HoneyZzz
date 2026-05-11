@@ -81,7 +81,7 @@ if (!empty($_SESSION['panier'])) {
             <?= htmlspecialchars($userEmail) ?>
           </p>
 
-          <?php if ($_SESSION['role'] == 'client'): ?>
+          <?php if ($role == 'client'): ?>
               <a href="client.php">Mon profil</a>
           <?php else: ?>
               <a href="apiculteur.php">Mon profil</a>
