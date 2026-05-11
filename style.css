@@ -1286,3 +1286,109 @@ footer {
     padding: 12px;
     border-radius: 8px;
 }
+.btn-annuler:hover {
+    background: #2c1a00;
+    color: white;
+}
+
+/* ── Layout principal ── */
+        .main-content {
+            margin-left: 200px;
+            padding: 36px 40px 60px;
+        }
+
+        .main-content h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #2c1a00;
+            margin-bottom: 32px;
+        }
+
+        /* ── Grille de widgets ── */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        /* ── Widget générique ── */
+        .widget {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Ombre très légère */
+    border: 1px solid #f0f0f0; /* Bordure fine au lieu de couleur miel partout */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.widget-titre {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #b08040;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ── Conteneur de données ── */
+.valeur-principale {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #2c1a00;
+    margin-bottom: 5px;
+}
+
+.valeur-principale span {
+    color: #ffcc00; /* La valeur est mise en avant avec la couleur miel */
+}
+
+.unite {
+    font-size: 1rem;
+    color: #9a7030;
+    font-weight: 500;
+}
+
+/* ── Multi-valeurs (Multisensor) ── */
+.multi-valeurs-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    text-align: center;
+}
+
+.valeur-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.valeur-item .chiffre {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c1a00;
+}
+
+.valeur-item .label {
+    font-size: 0.7rem;
+    color: #b08040;
+    margin-top: 4px;
+}
+
+/* ── Footer / Statut ── */
+.widget-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #f9f9f9;
+    font-size: 0.75rem;
+    color: #bbb;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .multi-valeurs-wrap { gap: 10px; }
+    .valeur-principale { font-size: 2.2rem; }
+}
