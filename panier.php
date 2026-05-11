@@ -1,9 +1,11 @@
-<?php
-// ✅ session_start() EN PREMIER, avant tout require
-session_start();
+<?php  require('include/connect.php'); ?>
+<?php  require('include/fonctions.php'); ?>
 
-require('connect.php');
-require('fonctions.php');
+<?php
+
+session_start();
+$connexion = mysqli_connect(SERVEUR, NOM, PASSE, BD);
+
 
 // Vérification login
 if (empty($_SESSION['mailU'])) {
@@ -19,7 +21,6 @@ if (!$connexion) {
     exit();
 }
 
-// ── Traitement des actions POST ──────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
