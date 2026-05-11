@@ -68,7 +68,7 @@ $mailU = $_SESSION['mailU'];
                     
                     if ($res && mysqli_num_rows($res) > 0) {
                         while($row = mysqli_fetch_assoc($res)) {
-                            echo "<option value='".$row['idRuche']."'>".$row['nomRuche']."</option>";
+                            echo "<option value='".$row['idRuche']."'>".$row['nom']."</option>";
                         }
                     } else {
                         echo "<option value=''>Aucune ruche trouvée pour votre compte</option>";
