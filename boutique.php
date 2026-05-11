@@ -92,7 +92,7 @@
     // On affiche le bouton seulement si l'utilisateur est connecté
     // (Puisque vous redirigez vers connexion.php si mailU est vide au début du fichier,
     // ce bouton s'affichera pour tout utilisateur ayant passé cette barrière)
-    if (!empty($_SESSION['mailU']) && $_SESSION['role'] === 'Apiculteur') : 
+    if (!empty($_SESSION['mailU']) && $_SESSION['role'] === 'apiculteur') : 
     ?>
       <div class="admin-actions" style="margin-bottom: 20px; text-align: right;">
         <a href="ajouter_miel.php" class="btn-valider" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
