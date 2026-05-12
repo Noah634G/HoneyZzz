@@ -86,7 +86,6 @@ if (!empty($_SESSION['panier'])) {
           <?php else: ?>
               <a href="apiculteur.php">Mon profil</a>
           <?php endif; ?>
-
           <a href="deconnexion.php" class="btn-logout">Déconnexion</a>
         </div>
       </div>
