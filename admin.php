@@ -21,6 +21,10 @@ $connexion = mysqli_connect("p:".SERVEUR, NOM, PASSE, BD);
 </head>
 <body>
 
+<?php 
+include('navbar.php'); 
+?>
+
 <h1>Gestion des ruches</h1>
 
 <?php AfficherRuchesAdmin($connexion); ?>
