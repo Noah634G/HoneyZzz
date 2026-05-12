@@ -24,8 +24,9 @@ $mailU = $_SESSION['mailU'];
 </head>
 <body>
 
-<nav>
-    </nav>
+<?php 
+include('navbar.php'); 
+?>
 
 <main class="container-form">
     <div class="form-card">
