@@ -297,11 +297,26 @@ footer {
 
     /* ── GRILLE PRODUITS ── */
     .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
+    display: block; /* On laisse le div parent tranquille */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
+/* On configure la liste UL pour qu'elle devienne la grille */
+.products-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+    gap: 28px;                             /* L'espace que tu avais choisi */
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+/* On s'assure que chaque LI (produit) prend bien sa place */
+.products-list li {
+    width: 100%; /* Il prend toute la largeur de sa colonne de grille */
+}
     .card {
       background: #fff;
       border: 1px solid #e0d0b0;
