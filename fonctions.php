@@ -867,7 +867,6 @@ function AfficherHistClient($connexion, $mailU) {
 		echo "<tr>
             <th>ID Commande</th>
             <th>Date</th>
-            <th>Email</th>
             <th>Produit</th>
             <th>Prix</th>
             <th>Quantité</th>
