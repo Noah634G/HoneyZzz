@@ -18,7 +18,7 @@
       // on redirige vers login
       header("Location:connexion.php");
     }
-    // sinon on stocke l'utilisateur courant dans la variable $pesudo
+    // sinon on stocke le mail du client connecté 
     else
     {
       $mailU = $_SESSION['mailU'];
@@ -49,3 +49,15 @@
 <?php 
 include('navbar.php'); 
 ?>
+
+<h1>Mon historique de commandes</h1>
+
+<?php
+AfficherHistClient($connexion, $mailU);
+?>
+
+</body>
+</html>
+
+
+
