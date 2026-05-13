@@ -1428,3 +1428,44 @@ footer {
     background-color: #fdf1c7;
     transition: background 0.2s;
 }
+
+/* ── TABLEAU CLIENT ── */
+
+.table-client {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.table-client th,
+.table-client td {
+  border: 1px solid #e0d0b0;
+  padding: 14px;
+  text-align: center;
+}
+
+.table-client th {
+  background-color: #f0d060;
+  color: #2c1a00;
+  font-weight: 700;
+}
+
+.table-client tr:nth-child(even) {
+  background-color: #fff8ee;
+}
+
+.table-client tr:hover {
+  background-color: #fdf1c7;
+  transition: background 0.2s;
+}
+
+
+
+
+
+
+
