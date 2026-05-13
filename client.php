@@ -1,6 +1,9 @@
-<?php  require('include/connect.php'); ?>
-<?php  require('include/fonctions.php'); ?>
+<?php  
+require('include/connect.php'); 
+require('include/fonctions.php'); 
 
+echo "<p>fonctions chargé<p>";
+?>
 <?php 
     // code PHP permettant de gérer le fait que l'utilisateur est bien logué et la connection à la BD pour la page.
     // Ce code pourrait être intégré dans une fonction car répété à chaque début de page. Attention toutefois dans ce cas-là à bien gérer les variables (locales et globales)
