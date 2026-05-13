@@ -28,6 +28,8 @@ include('navbar.php');
 <h1>Gestion des ruches</h1>
 
 <?php AfficherRuchesAdmin($connexion); ?>
-
+<h2>Historique des commandes</h2>
+<?php AfficherHistoriqueCommandesAdmin($connexion); ?>
+    
 </body>
 </html>
