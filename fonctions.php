@@ -853,7 +853,6 @@ function AfficherHistClient($connexion, $mailU) {
 		echo "<tr>
             <th>ID Commande</th>
             <th>Date</th>
-            <th>Client</th>
             <th>Email</th>
             <th>Produit</th>
             <th>Prix</th>
@@ -868,11 +867,7 @@ function AfficherHistClient($connexion, $mailU) {
             echo "<td>" . $c['idCommande'] . "</td>";
 
             echo "<td>" . $c['date'] . "</td>";
-            
-			echo "<td>" . htmlspecialchars($c['prenomU']) . " " . htmlspecialchars($c['nomU']) . "</td>";
-            
-			echo "<td>" . htmlspecialchars($c['mailU']) . "</td>";
-            
+                        
 			echo "<td>" . htmlspecialchars($c['nomProduit']) . "</td>";
 
 			echo "<td>" . number_format($c['prix'], 2) . " €</td>";
