@@ -900,15 +900,18 @@ function AfficherHistClient($connexion, $mailU) {
 
 	
 }
-function AjouterCommande($connexion, $idCommande, $date, $total, $idUtilisateur) {
+function AjouterCommande($connexion, $date, $total, $idUtilisateur) {
+    
+
     // Sécurité : on nettoie les chaînes pour éviter les injections SQL
-    $idCommande = mysqli_real_escape_string($connexion, $idCommande);
     $date = mysqli_real_escape_string($connexion, $date);
     $total = (float)$total; // On force en nombre entier;
     $idUtilisateur = mysqli_real_escape_string($connexion, $idUtilisateur);
+
     // Requête SQL d'insertion
     $sql = "INSERT INTO Commande (idCommande, date, total, idUtilisateur) 
-            VALUES ('$idCommande', '$date', '$total', '$idUtilisateur')";
+            VALUES ('$date', '$total', '$idUtilisateur')";
+
     return mysqli_query($connexion, $sql);
 }
 
