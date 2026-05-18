@@ -15,8 +15,16 @@ $commandeValidee = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date = date("Y-m-d"); // date actuelle
     $total = getTotalPanier();
-    $idUtilisateur = $_SESSION['idUtilisateur'];
+    
+    // 1. On récupère le mail en session
+    $mailU = $_SESSION['mailU'];
 
+    // 2. On cherche l'idUtilisateur correspondant dans la base
+    $requete = mysqli_query($connexion, "SELECT idUtilisateur FROM Utilisateur WHERE mailU = '$mailU'");
+    $donnees = mysqli_fetch_assoc($requete);
+    $idUtilisateur = $donnees['idUtilisateur'];
+
+    // 3. On peut maintenant appeler la fonction sans erreur
     AjouterCommande($connexion, $date, $total, $idUtilisateur);
 
     viderPanier();
