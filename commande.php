@@ -29,7 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-
+<!--Barre de navigation-->
+<?php 
+include('navbar.php'); 
+?>
 <div class="commande-box">
 
 <?php if (!$commandeValidee): ?>
