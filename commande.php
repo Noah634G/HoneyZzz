@@ -3,7 +3,7 @@ require('include/connect.php');
 require('include/fonctions.php');
 
 session_start();
-
+$connexion = mysqli_connect(SERVEUR, NOM, PASSE, BD);
 if (empty($_SESSION['mailU'])) {
     $_SESSION['message'] = "Vous devez être connecté.";
     header("Location: connexion.php");
@@ -13,6 +13,11 @@ if (empty($_SESSION['mailU'])) {
 $commandeValidee = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $date = date("Y-m-d"); // date actuelle
+    $total = getTotalPanier();
+    $idUtilisateur = $_SESSION['idUtilisateur'];
+
+    AjouterCommande($connexion, $idCommande, $date, $total, $idUtilisateur);
 
     viderPanier();
     $commandeValidee = true;
@@ -29,10 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<!--Barre de navigation-->
-<?php 
-include('navbar.php'); 
-?>
+
 <div class="commande-box">
 
 <?php if (!$commandeValidee): ?>
