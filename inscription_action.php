@@ -2,7 +2,7 @@
 <?php  require('include/fonctions.php'); ?>
 
 <?php
-// On inclut la connexion et tes fonctions
+// On inclut la connexion et les fonctions
 $connexion = mysqli_connect(SERVEUR, NOM, PASSE, BD);
 
 // On récupère les données envoyées par le formulaire via $_POST
@@ -20,7 +20,7 @@ if ($_POST['mdp'] != $_POST['confirm-mdp']) {
     exit();
 }
 
-// On appelle ta fonction InscriptionUtilisateur
+// On appelle la fonction InscriptionUtilisateur
 $resultat = InscriptionUtilisateur($connexion, $nom, $prenom, $email,$tel, $mdp, $role);
 
 if ($resultat) {
