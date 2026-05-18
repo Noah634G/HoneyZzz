@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $total = getTotalPanier();
     $idUtilisateur = $_SESSION['idUtilisateur'];
 
-    AjouterCommande($connexion, $idCommande, $date, $total, $idUtilisateur);
+    AjouterCommande($connexion, $date, $total, $idUtilisateur);
 
     viderPanier();
     $commandeValidee = true;
