@@ -3,7 +3,7 @@ require('include/connect.php');
 require('include/fonctions.php');
 
 session_start();
-$connexion = mysqli_connect(SERVEUR, NOM, PASSE, BD);
+$connexion = mysqli_connect("p:".SERVEUR, NOM, PASSE,BD);
 if (empty($_SESSION['mailU'])) {
     $_SESSION['message'] = "Vous devez être connecté.";
     header("Location: connexion.php");
