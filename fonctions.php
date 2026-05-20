@@ -146,33 +146,19 @@ function AfficherRuche($connexion, $mailU) {
     }
 }
 
-function AjouterRuche($connexion, $nom, $date, $espece, $statut, $idEmplacement, $idUtilisateur) {
-    // 1. Sécurité
+function AjouterRuche($connexion, $nom, $date, $espece, $statut, $idEmplacement) {
+    // Sécurité : on nettoie les chaînes pour éviter les injections SQL
     $nom = mysqli_real_escape_string($connexion, $nom);
     $date = mysqli_real_escape_string($connexion, $date);
     $espece = mysqli_real_escape_string($connexion, $espece);
     $statut = mysqli_real_escape_string($connexion, $statut);
-    $idEmplacement = (int)$idEmplacement;
-    $idUtilisateur = (int)$idUtilisateur; // On force l'ID utilisateur en entier
+    $idEmplacement = (int)$idEmplacement; // On force en nombre entier
 
-    // 2. Première requête : Création de la ruche
+    // Requête SQL d'insertion
     $sql = "INSERT INTO Ruche (nom, dateInstallation, especeAbeille, statut, idEmplacement) 
-            VALUES ('$nom', '$date', '$espece', '$statut', $idEmplacement)";
-    
-    $result1 = mysqli_query($connexion, $sql);
+            VALUES ('$nom', '$date', '$espece', '$statut', '$idEmplacement')";
 
-    // 3. Récupération de l'ID généré pour la ruche et création du lien
-    if ($result1) {
-        $idRuche = mysqli_insert_id($connexion); // C'est ici qu'on récupère l'ID automatique
-        
-        $sql2 = "INSERT INTO Gerer(idUtilisateur, idRuche) 
-                 VALUES ($idUtilisateur, $idRuche)";
-        
-        $result2 = mysqli_query($connexion, $sql2);
-        return $result2;
-    }
-
-    return false;
+    return mysqli_query($connexion, $sql);
 }
 
 
@@ -811,44 +797,8 @@ $resultat = mysqli_query($connexion, $query);
     }
 }
 
-function AfficherHistoriqueCommandesAdmin($connexion) {
-
-    $query = " SELECT  C.idCommande, C.date, C.total, U.nomU, U.prenomU, U.mailU, P.nomProduit, P.prix, CT.quantitep FROM Commande C JOIN Utilisateur U ON C.idUtilisateur = U.idUtilisateur JOIN Contenir CT ON C.idCommande = CT.idCommande JOIN Produit P ON CT.idProduit = P.idProduit ORDER BY C.date DESC";
-
-    $resultat = mysqli_query($connexion, $query);
-    if ($resultat) {
-        echo "<table class='table-admin'>";
-        echo "<tr>
-                <th>ID Commande</th>
-                <th>Date</th>
-                <th>Client</th>
-                <th>Email</th>
-                <th>Produit</th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Total Commande</th>
-              </tr>";
-
-        while ($c = mysqli_fetch_array($resultat)) {
-            echo "<tr>";
-            echo "<td>" . $c['idCommande'] . "</td>";
-            echo "<td>" . $c['date'] . "</td>";
-            echo "<td>" . htmlspecialchars($c['prenomU']) . " " . htmlspecialchars($c['nomU']) . "</td>";
-            echo "<td>" . htmlspecialchars($c['mailU']) . "</td>";
-            echo "<td>" . htmlspecialchars($c['nomProduit']) . "</td>";
-            echo "<td>" . number_format($c['prix'], 2) . " €</td>";
-            echo "<td>" . $c['quantitep'] . "</td>";
-            echo "<td>" . number_format($c['total'], 2) . " €</td>";
-            echo "</tr>";
-        }
-
-        echo "</table>";
-    } else {
-        echo "Erreur SQL : " . mysqli_error($connexion);
-    }
-}
-
 function AfficherHistClient($connexion, $mailU) {
+    
     $query = "SELECT C.idCommande, C.date, C.total, 
     U.nomU, U.prenomU, U.mailU, 
     P.nomProduit, P.prix,
@@ -856,15 +806,15 @@ function AfficherHistClient($connexion, $mailU) {
     FROM Commande C
     JOIN Utilisateur U ON C.idUtilisateur = U.idUtilisateur
     JOIN Contenir CT ON C.idCommande = CT.idCommande
-	JOIN Produit P ON CT.idProduit = P.idProduit
+    JOIN Produit P ON CT.idProduit = P.idProduit
     WHERE U.mailU = '$mailU'
     ORDER BY C.date DESC";
-    
-	$resultat = mysqli_query($connexion, $query);
-	if ($resultat) {
-		echo "<table class='table-client'>";
-		
-		echo "<tr>
+
+    $resultat = mysqli_query($connexion, $query);
+    if ($resultat) {
+        echo "<table class='table-client'>";
+
+        echo "<tr>
             <th>ID Commande</th>
             <th>Date</th>
             <th>Produit</th>
@@ -873,63 +823,72 @@ function AfficherHistClient($connexion, $mailU) {
             <th>Total Commande</th>
         </tr>";
 
-		while ($c = mysqli_fetch_array($resultat)) {
+        while ($c = mysqli_fetch_array($resultat)) {
+            
+            echo "<tr>";
 
-			echo "<tr>";
-			
             echo "<td>" . $c['idCommande'] . "</td>";
 
             echo "<td>" . $c['date'] . "</td>";
-                        
-			echo "<td>" . htmlspecialchars($c['nomProduit']) . "</td>";
 
-			echo "<td>" . number_format($c['prix'], 2) . " €</td>";
+            echo "<td>" . htmlspecialchars($c['nomProduit']) . "</td>";
 
-			echo "<td>" . $c['quantitep'] . "</td>";
+            echo "<td>" . number_format($c['prix'], 2) . " €</td>";
 
-			echo "<td>" . number_format($c['total'], 2) . " €</td>";
+            echo "<td>" . $c['quantitep'] . "</td>";
+            
+            echo "<td>" . number_format($c['total'], 2) . " €</td>";
+            
+            echo "</tr>";
+        }
 
-			echo "</tr>";
-		}
+        echo "</table>";
+        
+        } else {
 
-		echo "</table>";
-
-		} else {
-		    echo "Erreur SQL : " . mysqli_error($connexion);
-	}
-
-	
+            echo "Erreur SQL : " . mysqli_error($connexion);
+        }
 }
-function AjouterCommande($connexion, $date, $total, $idUtilisateur) {
+
+function AjouterCommande($connexion, $date, $total, $idUtilisateur, $idProduit, $quantitep) {
 
     $date = mysqli_real_escape_string($connexion, $date);
     $total = (float)$total;
     $idUtilisateur = (int)$idUtilisateur;
-
+    
     $sql = "INSERT INTO Commande (date, total, idUtilisateur) 
             VALUES ('$date', '$total', '$idUtilisateur')";
 
-    return mysqli_query($connexion, $sql);
+    $resultatCommande = mysqli_query($connexion, $sql);
+
+    $idCommande = mysqli_insert_id($connexion);
+
+    foreach ($_SESSION['panier'] as $article) {
+        $nomProduit = mysqli_real_escape_string($connexion, $article['nomProduit']);
+        $quantitep = (int)$quantitep;
+
+        $queryProduit = "SELECT idProduit FROM Produit 
+                         WHERE nomProduit = '$nomProduit'";
+
+        $resultatProduit = mysqli_query($connexion, $queryProduit);
+
+        if ($resultatProduit && mysqli_num_rows($resultatProduit) > 0) {
+            $produit = mysqli_fetch_assoc($resultatProduit);
+            $idProduit = (int)$produit['idProduit'];
+
+            $sql2 = "INSERT INTO Contenir (idCommande, idProduit, quantitep)
+                        VALUES ('$idCommande', '$idProduit', '$quantitep')";
+            $resultatContenir = mysqli_query($connexion, $sql2);
+        }
+    }
+    return true;
 }
 
 
 
-		
 
 
-
-
-
-
-
-
-		
-
-
-
-
-
-
+      
 
 
 
