@@ -850,37 +850,51 @@ function AfficherHistClient($connexion, $mailU) {
         }
 }
 
-function AjouterCommande($connexion, $date, $total, $idUtilisateur, $idProduit, $quantitep) {
+function AjouterCommande($connexion, $date, $total, $idUtilisateur) {
 
     $date = mysqli_real_escape_string($connexion, $date);
     $total = (float)$total;
     $idUtilisateur = (int)$idUtilisateur;
-    
+
+    // Insertion commande
     $sql = "INSERT INTO Commande (date, total, idUtilisateur) 
             VALUES ('$date', '$total', '$idUtilisateur')";
 
     $resultatCommande = mysqli_query($connexion, $sql);
 
+    if (!$resultatCommande) {
+        return false;
+    }
+
+    // Récupération ID commande créée
     $idCommande = mysqli_insert_id($connexion);
 
+    // Parcours du panier
     foreach ($_SESSION['panier'] as $article) {
-        $nomProduit = mysqli_real_escape_string($connexion, $article['nomProduit']);
-        $quantitep = (int)$quantitep;
 
-        $queryProduit = "SELECT idProduit FROM Produit 
+        $nomProduit = mysqli_real_escape_string($connexion, $article['nomProduit']);
+        $quantitep = (int)$article['quantite'];
+
+        // Recherche ID produit
+        $queryProduit = "SELECT idProduit 
+                         FROM Produit 
                          WHERE nomProduit = '$nomProduit'";
 
         $resultatProduit = mysqli_query($connexion, $queryProduit);
 
         if ($resultatProduit && mysqli_num_rows($resultatProduit) > 0) {
+
             $produit = mysqli_fetch_assoc($resultatProduit);
             $idProduit = (int)$produit['idProduit'];
 
+            // Insertion dans Contenir
             $sql2 = "INSERT INTO Contenir (idCommande, idProduit, quantitep)
-                        VALUES ('$idCommande', '$idProduit', '$quantitep')";
-            $resultatContenir = mysqli_query($connexion, $sql2);
+                     VALUES ('$idCommande', '$idProduit', '$quantitep')";
+
+            mysqli_query($connexion, $sql2);
         }
     }
+
     return true;
 }
 
