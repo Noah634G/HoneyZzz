@@ -872,6 +872,43 @@ function AfficherHistClient($connexion, $mailU) {
         }
 }
 
+function AfficherHistoriqueCommandesAdmin($connexion) {
+
+    $query = " SELECT  C.idCommande, C.date, C.total, U.nomU, U.prenomU, U.mailU, P.nomProduit, P.prix, CT.quantitep FROM Commande C JOIN Utilisateur U ON C.idUtilisateur = U.idUtilisateur JOIN Contenir CT ON C.idCommande = CT.idCommande JOIN Produit P ON CT.idProduit = P.idProduit ORDER BY C.date DESC";
+
+    $resultat = mysqli_query($connexion, $query);
+    if ($resultat) {
+        echo "<table class='table-admin'>";
+        echo "<tr>
+                <th>ID Commande</th>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Email</th>
+                <th>Produit</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Total Commande</th>
+              </tr>";
+
+        while ($c = mysqli_fetch_array($resultat)) {
+            echo "<tr>";
+            echo "<td>" . $c['idCommande'] . "</td>";
+            echo "<td>" . $c['date'] . "</td>";
+            echo "<td>" . htmlspecialchars($c['prenomU']) . " " . htmlspecialchars($c['nomU']) . "</td>";
+            echo "<td>" . htmlspecialchars($c['mailU']) . "</td>";
+            echo "<td>" . htmlspecialchars($c['nomProduit']) . "</td>";
+            echo "<td>" . number_format($c['prix'], 2) . " €</td>";
+            echo "<td>" . $c['quantitep'] . "</td>";
+            echo "<td>" . number_format($c['total'], 2) . " €</td>";
+            echo "</tr>";
+        }
+
+        echo "</table>";
+    } else {
+        echo "Erreur SQL : " . mysqli_error($connexion);
+    }
+}
+
 function AjouterCommande($connexion, $date, $total, $idUtilisateur) {
 
     $date = mysqli_real_escape_string($connexion, $date);
