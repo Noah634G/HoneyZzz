@@ -146,19 +146,33 @@ function AfficherRuche($connexion, $mailU) {
     }
 }
 
-function AjouterRuche($connexion, $nom, $date, $espece, $statut, $idEmplacement) {
-    // Sécurité : on nettoie les chaînes pour éviter les injections SQL
+function AjouterRuche($connexion, $nom, $date, $espece, $statut, $idEmplacement, $idUtilisateur) {
+    // 1. Sécurité
     $nom = mysqli_real_escape_string($connexion, $nom);
     $date = mysqli_real_escape_string($connexion, $date);
     $espece = mysqli_real_escape_string($connexion, $espece);
     $statut = mysqli_real_escape_string($connexion, $statut);
-    $idEmplacement = (int)$idEmplacement; // On force en nombre entier
+    $idEmplacement = (int)$idEmplacement;
+    $idUtilisateur = (int)$idUtilisateur; // On force l'ID utilisateur en entier
 
-    // Requête SQL d'insertion
+    // 2. Première requête : Création de la ruche
     $sql = "INSERT INTO Ruche (nom, dateInstallation, especeAbeille, statut, idEmplacement) 
-            VALUES ('$nom', '$date', '$espece', '$statut', '$idEmplacement')";
+            VALUES ('$nom', '$date', '$espece', '$statut', $idEmplacement)";
+    
+    $result1 = mysqli_query($connexion, $sql);
 
-    return mysqli_query($connexion, $sql);
+    // 3. Récupération de l'ID généré pour la ruche et création du lien
+    if ($result1) {
+        $idRuche = mysqli_insert_id($connexion); // C'est ici qu'on récupère l'ID automatique
+        
+        $sql2 = "INSERT INTO Gerer(idUtilisateur, idRuche) 
+                 VALUES ($idUtilisateur, $idRuche)";
+        
+        $result2 = mysqli_query($connexion, $sql2);
+        return $result2;
+    }
+
+    return false;
 }
 
 
