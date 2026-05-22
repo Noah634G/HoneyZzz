@@ -147,34 +147,42 @@ function AfficherRuche($connexion, $mailU) {
 }
 
 function AjouterRuche($connexion, $nom, $date, $espece, $statut, $idEmplacement, $idUtilisateur) {
-    // 1. Sécurité
+    
+    // 1. Sécurité et typage des données
     $nom = mysqli_real_escape_string($connexion, $nom);
     $date = mysqli_real_escape_string($connexion, $date);
     $espece = mysqli_real_escape_string($connexion, $espece);
     $statut = mysqli_real_escape_string($connexion, $statut);
     $idEmplacement = (int)$idEmplacement;
-    $idUtilisateur = (int)$idUtilisateur; // On force l'ID utilisateur en entier
+    $idUtilisateur = (int)$idUtilisateur;
 
-    // 2. Première requête : Création de la ruche
+    // 2. Première requête : Insertion dans la table RUCHE
     $sql = "INSERT INTO Ruche (nom, dateInstallation, especeAbeille, statut, idEmplacement) 
             VALUES ('$nom', '$date', '$espece', '$statut', $idEmplacement)";
     
-    $result1 = mysqli_query($connexion, $sql);
+    $resultatRuche = mysqli_query($connexion, $sql);
 
-    // 3. Récupération de l'ID généré pour la ruche et création du lien
-    if ($result1) {
-        $idRuche = mysqli_insert_id($connexion); // C'est ici qu'on récupère l'ID automatique
-        
-        $sql2 = "INSERT INTO Gerer(idUtilisateur, idRuche) 
-                 VALUES ($idUtilisateur, $idRuche)";
-        
-        $result2 = mysqli_query($connexion, $sql2);
-        return $result2;
+    // Si l'insertion de la ruche échoue, on s'arrête tout de suite (comme pour la commande)
+    if (!$resultatRuche) {
+        return false;
     }
 
-    return false;
-}
+    // 3. Récupération de l'ID automatique de la ruche fraîchement créée
+    $idRuche = mysqli_insert_id($connexion); 
 
+    // 4. Deuxième requête : Insertion dans la table de liaison GERER
+    $sql2 = "INSERT INTO Gerer (idUtilisateur, idRuche) 
+             VALUES ($idUtilisateur, $idRuche)";
+    
+    $resultatGerer = mysqli_query($connexion, $sql2);
+    
+    // Si l'insertion dans Gerer s'est bien passée, on retourne true, sinon false
+    if (!$resultatGerer) {
+        return false;
+    }
+
+    return true;
+}
 
 function afficherHumidite($connexion, $nomRuche) {
     // On nettoie le nom de la ruche pour la sécurité
